@@ -1,0 +1,68 @@
+body{
+    font-family:Arial,sans-serif;
+    text-align:center;
+    transition:.4s;
+}
+
+body.dawn{
+    background:#ffe8c4;
+}
+
+body.dusk{
+    background:#3c315e;
+    color:white;
+}
+
+body.night{
+    background:#111;
+    color:white;
+}
+
+#board{
+    width:min(90vw,600px);
+    margin:25px auto;
+    display:grid;
+    gap:5px;
+}
+
+.tile{
+    aspect-ratio:1;
+    background-repeat:no-repeat;
+    border-radius:8px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.tile span{
+    font-size:clamp(18px,3vw,32px);
+    font-weight:bold;
+    color:white;
+    background:rgba(0,0,0,.5);
+    padding:3px 8px;
+    border-radius:6px;
+    text-shadow:2px 2px 3px black;
+}
+
+.empty{
+    background:none;
+    cursor:default;
+}
+
+button{
+    padding:10px 18px;
+    margin:5px;
+    cursor:pointer;
+}
+
+table{
+    margin:auto;
+    border-collapse:collapse;
+}
+
+td,th{
+    border:1px solid gray;
+    padding:8px;
+}
