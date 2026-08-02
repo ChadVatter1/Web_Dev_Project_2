@@ -4,21 +4,50 @@ let moves = 0;
 let seconds = 0;
 let timer;
 
-let currentMode = "dawn";
+let currentTheme = "beach";
 
-const settings = {
-    dawn: {size:4, image:"Dawn.jpg"},
-    dusk: {size:5, image:"Dusk.jpg"},
-    night:{size:6, image:"Night.jpg"}
+const settings =
+{
+    beach:
+    {
+        image: "beach.jpg"
+    },
+
+    coconut:
+    {
+        image: "coconut.jpg"
+    },
+
+    night_beach:
+    {
+        image: "night_beach.jpg"
+    }
 };
 
 
-function changeMode(mode){
-    currentMode = mode;
-    size = settings[mode].size;
-    document.body.className = mode;
+function changeTheme(theme)
+{
+    // Updating the selected theme
+
+    currentTheme = theme;
+
+    document.body.className = theme;
+
     document.getElementById("mode-title").innerText =
-        `${mode.charAt(0).toUpperCase() + mode.slice(1)} Mode - ${size}x${size} Puzzle`;
+        `${theme.replace("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())} - ${size}x${size} Puzzle`;
+
+    render();
+}
+
+function changeDifficulty(newSize)
+{
+    // Updating the puzzle size
+
+    size = Number(newSize);
+
+    document.getElementById("mode-title").innerText =
+        `${currentTheme.replace("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())} - ${size}x${size} Puzzle`;
+
     createBoard();
     shuffle();
 }
@@ -134,7 +163,7 @@ function win(){
     let name = prompt("Solved! Enter your name:");
 
     if(name){
-        saveScore(name, moves, seconds, currentMode);
+        saveScore(name, moves, seconds, currentTheme);
     }
 }
 
@@ -159,8 +188,7 @@ function render(){
             let y = Math.floor(position / size);
 
             block.style.backgroundImage =
-            `url(images/${currentMode}/${settings[currentMode].image})`;
-
+            `url(images/themes/${settings[currentTheme].image})`;
             block.style.backgroundSize =
             `${size * 100}% ${size * 100}%`;
 

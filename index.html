@@ -8,20 +8,44 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body class="dawn">
+<body class="beach">
 
     <h1>15 Puzzle</h1>
 
     <div class="mode-description">
-        <h2 id="mode-title">Dawn Mode - 4x4 Puzzle</h2>
+        <h2 id="mode-title">Beach - 4x4 Puzzle</h2>
     </div>
 
     <div class="controls">
-        <button data-mode="dawn">Dawn (4x4)</button>
-        <button data-mode="dusk">Dusk (5x5)</button>
-        <button data-mode="night">Night (6x6)</button>
-        <br>
-        <button id="shuffle">Shuffle</button>
+
+    <div>
+        <p><strong>Theme</strong></p>
+
+        <button data-theme="beach">Beach</button>
+        <button data-theme="coconut">Coconut Beach</button>
+        <button data-theme="night_beach">Night Beach</button>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="difficulty">
+            <strong>Difficulty</strong>
+        </label>
+
+        <select id="difficulty">
+            <option value="4">Normal (4x4)</option>
+            <option value="5">Hard (5x5)</option>
+            <option value="6">Expert (6x6)</option>
+        </select>
+    </div>
+
+    <br>
+
+    <button id="shuffle">
+        Shuffle
+    </button>
+
     </div>
 
     <div id="stats">
