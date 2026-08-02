@@ -1,19 +1,105 @@
 <?php
 
+header("Content-Type: application/json");
+
+
 require "db.php";
 
-$data = json_decode(file_get_contents("php://input"), true);
 
-$name = $data["name"];
-$moves = $data["moves"];
-$time = $data["time"];
-$theme = $data["theme"];
+
+$data = json_decode(
+    file_get_contents("php://input"),
+    true
+);
+
+
+
+if(!$data)
+{
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid JSON data"
+    ]);
+
+    exit;
+}
+
+
+
+$name = trim($data["player_name"] ?? "");
+
+$theme = trim($data["theme"] ?? "");
+
+$moves = $data["moves"] ?? -1;
+
+$time = $data["time_seconds"] ?? -1;
+
+
+
+if(
+    empty($name) ||
+    empty($theme) ||
+    !is_numeric($moves) ||
+    !is_numeric($time)
+)
+{
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid score data"
+    ]);
+
+    exit;
+}
+
+
+
+$name = substr($name,0,50);
+
+$moves = intval($moves);
+
+$time = intval($time);
+
+
+
+if($moves < 0 || $time < 0)
+{
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid score values"
+    ]);
+
+    exit;
+}
+
+
+
+$allowedThemes =
+[
+    "beach",
+    "coconut",
+    "night_beach"
+];
+
+
+
+if(!in_array($theme,$allowedThemes))
+{
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid theme"
+    ]);
+
+    exit;
+}
+
 
 
 $stmt = $conn->prepare(
-    "INSERT INTO leaderboard (player_name,moves,time_seconds,theme)
-     VALUES (?,?,?,?)"
+    "INSERT INTO leaderboard
+    (player_name,moves,time_seconds,theme)
+    VALUES (?,?,?,?)"
 );
+
 
 
 $stmt->bind_param(
@@ -25,24 +111,27 @@ $stmt->bind_param(
 );
 
 
-if($stmt->execute()){
 
+if($stmt->execute())
+{
     echo json_encode([
-        "success"=>true
+        "success" => true,
+        "message" => "Score saved"
     ]);
-
 }
-else{
-
+else
+{
     echo json_encode([
-        "success"=>false,
-        "error"=>$stmt->error
+        "success" => false,
+        "message" => "Database error"
     ]);
-
 }
+
 
 
 $stmt->close();
+
 $conn->close();
+
 
 ?>

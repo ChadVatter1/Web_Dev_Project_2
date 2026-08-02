@@ -8,6 +8,7 @@ document
 };
 
 
+
 document
 .getElementById("shuffle")
 .onclick = function()
@@ -16,6 +17,7 @@ document
 
     shuffle();
 };
+
 
 
 document
@@ -27,6 +29,8 @@ document
     resetGame();
 };
 
+
+
 document
 .getElementById("hint")
 .onclick = function()
@@ -37,6 +41,7 @@ document
 };
 
 
+
 document
 .getElementById("music-toggle")
 .onclick = function()
@@ -45,6 +50,7 @@ document
 
     toggleAudio();
 };
+
 
 
 document
@@ -60,6 +66,7 @@ document
 });
 
 
+
 document
 .getElementById("difficulty")
 .onchange = function()
@@ -67,4 +74,15 @@ document
     // Changing the puzzle difficulty
 
     changeDifficulty(this.value);
+};
+
+
+
+document
+.getElementById("track")
+.onchange = function()
+{
+    // Changing gameplay assistance level
+
+    changeTrack(this.value);
 };
