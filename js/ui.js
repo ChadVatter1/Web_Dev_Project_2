@@ -1,10 +1,40 @@
 document
+.getElementById("start")
+.onclick = function()
+{
+    // Starting the puzzle
+
+    startGame();
+};
+
+
+document
 .getElementById("shuffle")
 .onclick = function()
 {
     // Shuffling the puzzle
 
     shuffle();
+};
+
+
+document
+.getElementById("reset")
+.onclick = function()
+{
+    // Resetting the puzzle
+
+    resetGame();
+};
+
+
+document
+.getElementById("music-toggle")
+.onclick = function()
+{
+    // Toggling game audio
+
+    toggleAudio();
 };
 
 
