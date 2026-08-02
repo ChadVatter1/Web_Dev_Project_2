@@ -17,6 +17,8 @@ let moveAudio;
 let successAudio;
 let hintAudio;
 
+let magicUses = 3;
+
 const difficultyMusic =
 {
     4: "audio/difficulty/normal.mp3",
@@ -105,6 +107,8 @@ function shuffle()
     moves = 0;
     seconds = 0;
     gameStarted = false;
+    magicUses = 3;
+    updateHintButton();
 
     stopTimer();
     stopGameAudio();
@@ -283,6 +287,168 @@ function move(index)
             win();
         }
     }
+}
+
+function useHint()
+{
+    // Using a magic hint
+
+    if(!gameStarted)
+    {
+        return;
+    }
+
+    if(magicUses <= 0)
+    {
+        return;
+    }
+
+    let hintTile = findHintTile();
+
+    if(hintTile !== -1)
+    {
+        magicUses--;
+
+        updateHintButton();
+
+        highlightHint(hintTile);
+
+        if(audioEnabled)
+        {
+            hintAudio.currentTime = 0;
+            hintAudio.play();
+        }
+    }
+    else
+    {
+        highlightHint(findRandomValidMove());
+    }
+}
+
+function findHintTile()
+{
+    // Finding the move that improves the puzzle the most
+
+    let empty = board.indexOf("");
+
+    let row = Math.floor(empty / size);
+    let col = empty % size;
+
+    let directions =
+    [
+        [-1,0],
+        [1,0],
+        [0,-1],
+        [0,1]
+    ];
+
+    let possibleMoves = [];
+
+
+    directions.forEach(direction =>
+    {
+        let newRow = row + direction[0];
+        let newCol = col + direction[1];
+
+
+        if(
+            newRow >= 0 &&
+            newRow < size &&
+            newCol >= 0 &&
+            newCol < size
+        )
+        {
+            possibleMoves.push(newRow * size + newCol);
+        }
+    });
+
+
+    let currentDistance = calculateManhattan();
+
+    let bestTile = -1;
+    let bestImprovement = 0;
+
+
+    possibleMoves.forEach(index =>
+    {
+        [board[index], board[empty]] = 
+        [board[empty], board[index]];
+
+
+        let newDistance = calculateManhattan();
+
+
+        [board[index], board[empty]] = 
+        [board[empty], board[index]];
+
+
+        let improvement = currentDistance - newDistance;
+
+
+        if(improvement > bestImprovement)
+        {
+            bestImprovement = improvement;
+            bestTile = index;
+        }
+    });
+
+
+    return bestTile;
+}
+
+function calculateManhattan()
+{
+    // Calculating total puzzle distance
+
+    let distance = 0;
+
+
+    board.forEach((tile,index)=>
+    {
+        if(tile !== "")
+        {
+            let currentRow = Math.floor(index / size);
+            let currentCol = index % size;
+
+
+            let target = tile - 1;
+
+            let targetRow = Math.floor(target / size);
+            let targetCol = target % size;
+
+
+            distance +=
+                Math.abs(currentRow - targetRow) +
+                Math.abs(currentCol - targetCol);
+        }
+    });
+
+
+    return distance;
+}
+
+function highlightHint(index)
+{
+    // Highlighting the suggested tile
+
+    let tiles = document.querySelectorAll(".tile");
+
+    tiles[index].classList.add("hint-tile");
+
+
+    setTimeout(() =>
+    {
+        tiles[index].classList.remove("hint-tile");
+
+    },3000);
+}
+
+function updateHintButton()
+{
+    // Updating remaining magic uses
+
+    document.getElementById("hint").innerText =
+        `✨ Hint (${magicUses})`;
 }
 
 

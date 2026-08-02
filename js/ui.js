@@ -27,6 +27,15 @@ document
     resetGame();
 };
 
+document
+.getElementById("hint")
+.onclick = function()
+{
+    // Using magic hint
+
+    useHint();
+};
+
 
 document
 .getElementById("music-toggle")
