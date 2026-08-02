@@ -19,6 +19,15 @@ let hintAudio;
 
 let magicUses = 3;
 
+let currentTrack = "normal";
+
+let analytics =
+{
+    completed: 0,
+    totalMoves: 0,
+    totalTime: 0
+};
+
 const difficultyMusic =
 {
     4: "audio/difficulty/normal.mp3",
@@ -303,7 +312,9 @@ function useHint()
         return;
     }
 
+
     let hintTile = findHintTile();
+
 
     if(hintTile !== -1)
     {
@@ -544,6 +555,13 @@ function win()
     }
 
     gameStarted = false;
+    
+    analytics.completed++;
+    analytics.totalMoves += moves;
+    analytics.totalTime += seconds;
+    
+    saveAnalytics();
+    updateAnalytics();
 
     if(audioEnabled)
     {
@@ -551,6 +569,25 @@ function win()
     }
 }
 
+function changeTrack(track)
+{
+    // Changing gameplay assistance level
+
+    currentTrack = track;
+
+
+    if(track === "assisted")
+    {
+        magicUses = 5;
+    }
+    else
+    {
+        magicUses = 3;
+    }
+
+
+    updateHintButton();
+}
 
 function render()
 {
@@ -595,6 +632,65 @@ function render()
     });
 }
 
+function loadAnalytics()
+{
+    // Loading saved session statistics
+
+    let savedData = localStorage.getItem("puzzleAnalytics");
+
+
+    if(savedData)
+    {
+        analytics = JSON.parse(savedData);
+    }
+
+
+    updateAnalytics();
+}
+
+
+
+function saveAnalytics()
+{
+    // Saving session statistics
+
+    localStorage.setItem(
+        "puzzleAnalytics",
+        JSON.stringify(analytics)
+    );
+}
+
+
+
+function updateAnalytics()
+{
+    // Updating displayed statistics
+
+    document.getElementById("sessions").innerText =
+        analytics.completed;
+
+
+    if(analytics.completed > 0)
+    {
+        document.getElementById("average-moves").innerText =
+            Math.round(
+                analytics.totalMoves / analytics.completed
+            );
+
+
+        document.getElementById("average-time").innerText =
+            Math.round(
+                analytics.totalTime / analytics.completed
+            );
+    }
+    else
+    {
+        document.getElementById("average-moves").innerText = 0;
+
+        document.getElementById("average-time").innerText = 0;
+    }
+}
+
 
 window.onload = () =>
 {
@@ -612,6 +708,7 @@ window.onload = () =>
     successAudio.volume = 0.6;
     hintAudio.volume = 0.5;
 
+    loadAnalytics();
     createBoard();
     shuffle();
 };
