@@ -1,5 +1,10 @@
 # Web_Dev_Project_2
 
+Name: Chad & Priyansh
+GitHub: https://github.com/ChadVatter1/Web_Dev_Project_2
+URL: https://codd.cs.gsu.edu/~cvatter1/WP/Project_2/index.html
+video: https://drive.google.com/file/d/1JeKmRjRzEDa_NUQn6NNmLuti5oo7iz26/view?usp=sharing
+
 AI disclosure: We utilized AI to generate aesthetic ideas and problem solving ideas. For example how to create the magic hint. We also used AI to search through the files to find potential errors or misspells. We also utilized AI to help with more complicated tasks such as breaking an image into multiple parts for the puzzle. It also helped with syntax or code structures we were not familiar with.
 
 Question 1: Explain how your core files are organized and how they interact. Identify where routing, business logic, and rendered output are handled.
@@ -62,5 +67,3 @@ Questions 12:
 4) Some edge cases we handle are no name being entered (gets handled in the save score function call), also negative times or moves gets checked in save_score. Also, inside save_score we utilize prepared SQL statements to prevent SQL injections into our database.
 
 5) With so much of the heavy lifting be done by the game.js file, it is very fragile because if anything goes wrong there the entire application goes down. We can break this down into more modular pieces to prevent issues like this in the future.
-
-Me: 1, 3, 5, 6, 8, 11 D1, D3, D4
